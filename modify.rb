@@ -78,11 +78,10 @@ class Janken
     if draw?
       puts "あいこで..."
       pon
-    elsif victory?
-      puts "あたなの勝ちです"
-    else lose?
-      puts "あなたの負けです"
+      return
     end
+
+    puts result_message
   end
 
   def draw?
@@ -96,12 +95,13 @@ class Janken
   def lose?
     judge == 2
   end
+
+  def result_message
+    victory? ? "あたなの勝ちです" : "あなたの負けです"
+  end
 end
 
-# class Playerの振る舞いを持ったインスタンスを生成する。こうすることで、playerと言う名前の変数にPlayerクラスに定義されているメソッドをplayerが使えるようになる。
-# Playerはクラス、playerはローカル変数
 player = Player.new
 enemy = Enemy.new
 janken = Janken.new(player, enemy)
-# 下記の記述で、ジャンケンメソッドが起動される
 janken.pon
