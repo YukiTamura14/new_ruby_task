@@ -7,7 +7,7 @@ class Player
     puts "2: チョキ"
     puts "じゃんけん・・・"
 
-    gets
+    gets.chop.to_i
   end
 end
 
@@ -19,10 +19,11 @@ class Enemy
 end
 
 class Janken
+  HAND = ['グー','チョキ','パー']
   def pon(janken, player_hand, enemy_hand)
-    if ["0\n", "1\n", "2\n"].include?(player_hand)
-      judge =(enemy_hand - player_hand.to_i + 3) % 3
-      puts "あなたの手は#{Hand[player_hand.to_i]}, わたしの手は#{Hand[enemy_hand]}"
+    if [0, 1, 2].include?(player_hand)
+      judge =(enemy_hand - player_hand + 3) % 3
+      puts "あなたの手は#{HAND[player_hand]}, わたしの手は#{HAND[enemy_hand]}"
       if judge == 0
         puts "あいこで..."
         janken = Janken.new
@@ -39,7 +40,6 @@ class Janken
   end
 end
 
-Hand = ['グー','チョキ','パー']
 # class Playerの振る舞いを持ったインスタンスを生成する。こうすることで、playerと言う名前の変数にPlayerクラスに定義されているメソッドをplayerが使えるようになる。
 # Playerはクラス、playerはローカル変数
 player = Player.new
