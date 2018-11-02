@@ -1,49 +1,107 @@
 # コンソールを入力待ち状態にし、プレイヤーがコンソールから打ち込んだ値を出力する処理のメソッドの処理をこの中に作成する
-class Player
-  def hand
+class BasePlayer
+  HAND = ['グー', 'チョキ', 'パー']
+
+  attr_accessor :hand
+
+  def display_hand
+    HAND[@hand]
+  end
+end
+
+class Player < BasePlayer
+  def select_hand
+    display_message
+    set_hand
+  end
+
+  private
+
+  def set_hand
+    data = gets.chop
+    if valid?(data)
+      @hand = data.to_i
+    else
+      puts "０から2を入力してください"
+      set_hand
+    end
+  end
+
+  def display_message
     puts "数字を入力してください。"
     puts "0: グー"
     puts "1: パー"
     puts "2: チョキ"
     puts "じゃんけん・・・"
+  end
 
-    gets
+  def valid?(data)
+    ['0', '1', '2'].include?(data)
   end
 end
 
 # グー、チョキ、パーの値をランダムに出力するメソッドの処理をこの中に作成する
-class Enemy
-  def hand
-    rand(3)
+class Enemy < BasePlayer
+  def select_hand
+    @hand = rand(3)
   end
 end
 
 class Janken
-  def pon(janken, player_hand, enemy_hand)
-    if ["0\n", "1\n", "2\n"].include?(player_hand)
-      judge =(enemy_hand - player_hand.to_i + 3) % 3
-      puts "あなたの手は#{Hand[player_hand.to_i]}, わたしの手は#{Hand[enemy_hand]}"
-      if judge == 0
-        puts "あいこで..."
-        janken = Janken.new
-        janken.pon(janken, Player.new.hand, Enemy.new.hand)
-      elsif judge == 1
-        puts "あたなの勝ちです"
-      else judge == 2
-        puts "あなたの負けです"
-      end
-    else
-      puts "０から2を入力してください"
-      janken.pon(janken, Player.new.hand, Enemy.new.hand)
+  def initialize(player, enemy)
+    @player = player
+    @enemy = enemy
+  end
+
+  def pon
+    select_hand
+    display_hand
+    execute_judge
+  end
+
+  private
+
+  def select_hand
+    @player.select_hand
+    @enemy.select_hand
+  end
+
+  def judge
+    (@enemy.hand - @player.hand + 3) % 3
+  end
+
+  def display_hand
+    puts "あなたの手は#{@enemy.display_hand}, わたしの手は#{@player.display_hand}"
+  end
+
+  def execute_judge
+    if draw?
+      puts "あいこで..."
+      pon
+      return
     end
+
+    puts result_message
+  end
+
+  def draw?
+    judge == 0
+  end
+
+  def victory?
+    judge == 1
+  end
+
+  def lose?
+    judge == 2
+  end
+
+  def result_message
+    victory? ? "あたなの勝ちです" : "あなたの負けです"
   end
 end
 
-Hand = ['グー','チョキ','パー']
-# class Playerの振る舞いを持ったインスタンスを生成する。こうすることで、playerと言う名前の変数にPlayerクラスに定義されているメソッドをplayerが使えるようになる。
-# Playerはクラス、playerはローカル変数
 player = Player.new
 enemy = Enemy.new
-janken = Janken.new
-# 下記の記述で、ジャンケンメソッドが起動される
-janken.pon(janken, player.hand, enemy.hand)
+janken = Janken.new(player, enemy)
+janken.pon
