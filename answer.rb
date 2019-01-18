@@ -19,14 +19,14 @@ class Janken
   def pon(janken, player, enemy)
     if ! ["0\n", "1\n", "2\n"].include?(player)
       puts "0〜2の数字を入力してください。"
-      janken.pon(janken, Player.new.hand, Enemy.new.hand)
+      self.pon(janken, Player.new.hand, Enemy.new.hand)
     elsif (player.to_i - enemy.to_i + 3) % 3 == 2
       puts "相手の手は#{Choice[enemy]}です。あなたの勝ちです。"
     elsif (player.to_i - enemy.to_i + 3) % 3 == 1
       puts "相手の手は#{Choice[enemy]}です。あなたの負けです。"
     else
       puts "相手の手は#{Choice[enemy]}です。あいこです。"
-      janken.pon(janken, Player.new.hand, Enemy.new.hand)
+      self.pon(janken, Player.new.hand, Enemy.new.hand)
     end
   end
 end

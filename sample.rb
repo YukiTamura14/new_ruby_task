@@ -22,20 +22,20 @@ class Janken_start
 end
 
 class Janken
-  def pon(janken_start, player_hand, enemy_hand)
+  def pon(janken_start, player, enemy)
     janken_start = Janken_start.new
     janken_start
     hand = ['グー','チョキ','パー']
-    if player_hand == "0\n" || player_hand == "1\n" || player_hand == "2\n"
-      judge =(enemy_hand - player_hand.to_i + 3) % 3
-      p "あなたの手は#{hand[player_hand.to_i]}, わたしの手は#{hand[enemy_hand]}"
+    if player.hand == "0\n" || player.hand == "1\n" || player.hand == "2\n"
+      judge =(enemy.hand - player.hand.to_i + 3) % 3
+      p "あなたの手は#{hand[player.hand.to_i]}, わたしの手は#{hand[enemy.hand]}"
       if judge == 0
         p "あいこで..."
-        player = Player.new
-        enemy = Enemy.new
-        janken = Janken.new
+        # player = Player.new
+        # enemy = Enemy.new
+        # #janken = Janken.new
         janken_start = Janken_start.new
-        janken.pon(janken_start.janken_start, player.hand, enemy.hand)
+        self.pon(janken_start.janken_start, player, enemy)
       elsif judge == 1
         p "あたなの勝ちです"
       else judge == 2
@@ -43,11 +43,11 @@ class Janken
       end
     else
       p "０から2を入力してください"
-      player = Player.new
-      enemy = Enemy.new
-      janken = Janken.new
+      # player = Player.new
+      # enemy = Enemy.new
+      # janken = Janken.new
       janken_start = Janken_start.new
-      janken.pon(janken_start.janken_start, player.hand, enemy.hand)
+      self.pon(janken_start.janken_start, player, enemy)
     end
   end
 end
@@ -59,4 +59,4 @@ enemy = Enemy.new
 janken = Janken.new
 janken_start = Janken_start.new
 # 下記の記述で、ジャンケンメソッドが起動される
-janken.pon(janken_start.janken_start, player.hand, enemy.hand)
+janken.pon(janken_start.janken_start, player, enemy)

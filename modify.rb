@@ -28,7 +28,7 @@ class Janken
         janken = Janken.new
         janken.pon(janken, Player.new.hand, Enemy.new.hand)
       elsif judge == 1
-        puts "あたなの勝ちです"
+        puts "あなたの勝ちです"
       else judge == 2
         puts "あなたの負けです"
       end
